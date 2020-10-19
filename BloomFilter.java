@@ -2,7 +2,6 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 class BloomFilter{
@@ -24,7 +23,7 @@ class BloomFilter{
         // Two different sets each containing 1000 elements
         for(int i = 1001; i< 2001; i++){
             setA.add(i);
-            setB.add(i+1000);
+            setB.add(i+999);
         }
 
         filter = new int[10000];        
@@ -34,37 +33,61 @@ class BloomFilter{
     public static void main(String args[]){
 
         BloomFilter bF = new BloomFilter();
-
-        Collections.shuffle(bF.randomList);
-
-        bF.encode(bF.setA, bF.filter, bF.randomList);
-        bF.encode(bF.setB, bF.filter, bF.randomList);
-
-        for(int i : bF.filter){
-            System.out.print(i+",");
-        }
+        bF.encode();
+        bF.lookup();
         
     }
 
-    public void encode(Set<Integer> set, int[] filter, List<Integer> randomList){
+    public void encode(){
 
         int index = 0, counter = 0;
 
-        // We lookup each element from the set in the filter array
-        for(int i : set){
+        Collections.shuffle(randomList);
+
+        //encode the filter with hashes of each element from set A
+        for(int i : setA){
             
-            while(counter < 7 && index < 10000){
-
-                int hashValue = (randomList.get(index++)^index)%10000;
-
-                if(filter[hashValue] == 0){
-                    filter[hashValue] = 1;
+            while(counter < 7){
+                int val = (randomList.get(index++)^i)%10000;
+                
+                if(filter[val] == 0){
+                    filter[val] = 1;
                 }
-
+                counter++;
             }
+            counter = 0;
+        } 
+    }
 
+    public void lookup(){
+
+        int index = 0, counter = 0, answer = 0;
+        for(int i : setB){
+            boolean flag = true;
+            while(counter < 7){
+                int val = (randomList.get(index++)^i)%10000;
+                
+                if(filter[val] == 0){
+                    flag = false;
+                    break;
+                }
+                counter++;
+            }
+            if(flag){
+                answer++;
+            }
+            counter = 0;
         }
 
+        System.out.println(answer);
     }
 
 }
+
+          /*
+            1, 2,3, ..10000
+            shuffle -> 988, 566, 122, 000...
+
+            Set A - a, b, c, d
+            988, 566, 122, 22, 9, 81, 1
+*/
