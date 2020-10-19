@@ -43,14 +43,13 @@ public class CountingBloom {
         }
         Collections.shuffle(randomList);
 
-        for(int i = 11; i< 511; i++){
+        for(int i = 1; i< 501; i++){
             setA.add(i);
             setB.add(i*i);
             setA.add(i+(i*i));
         }
 
         filter = new int[10000];        
-
     }
 
     public static void main(String args[]){
@@ -88,12 +87,11 @@ public class CountingBloom {
 
         int counter = 0;
 
-        while(counter < 501){ 
-            for(int i : setA){    
-                int keys[] = map.get(i);
-                for(int j : keys){
-                    filter[j]--;
-                }
+        for(int i : setA){
+            if(counter == 500) return;    
+            int keys[] = map.get(i);
+            for(int j : keys){
+                filter[j]--;
             }
             counter++;
         }
@@ -110,15 +108,12 @@ public class CountingBloom {
                     flag = false;
                     break;
                 }
-                else{
-                    filter[j]--;
-                }
             }
             if(flag){
                 answer++;
             }
         }
-
+        System.out.println(setA.size());
         System.out.println(answer);
     }
 }
