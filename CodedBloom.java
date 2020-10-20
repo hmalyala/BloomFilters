@@ -66,19 +66,16 @@ public class CodedBloom {
     public void encode() {
 
         for(String s : map.keySet()){
-            System.out.print(s+" - ");
             for(int i = 0 ; i < s.length(); i++){
                 if(s.charAt(i) == '1'){
                     helper(map.get(s),i);
                 }
             }
-            System.out.println();
         }
     }
 
 
     public void helper(Set<Integer> set, int position){
-        System.out.print(set.size()+","+position+" : ");
         int index = 0, counter = 0;
 
         //encode the filter with hashes of each element from set A
@@ -124,6 +121,6 @@ public class CodedBloom {
                 answer++;
             }
         }
-        System.out.println(answer);
+        System.out.println("number of elements whose lookup results are correct:"+answer);
     }
 }
