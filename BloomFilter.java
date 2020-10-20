@@ -34,8 +34,10 @@ class BloomFilter{
 
         BloomFilter bF = new BloomFilter();
         bF.encode();
-        bF.lookup();
         
+        System.out.println("After lookup of elements in A, the number of elements found: "+bF.lookup(bF.setA));
+        System.out.println("After lookup of elements in B, the number of elements found: "+bF.lookup(bF.setB));
+        bF.lookup(bF.setB);
     }
 
     public void encode(){
@@ -59,10 +61,10 @@ class BloomFilter{
         } 
     }
 
-    public void lookup(){
+    public int lookup(Set<Integer> set){
 
         int index = 0, counter = 0, answer = 0;
-        for(int i : setB){
+        for(int i : set){
             boolean flag = true;
             while(counter < 7){
                 int val = (randomList.get(index++)^i)%10000;
@@ -78,16 +80,7 @@ class BloomFilter{
             }
             counter = 0;
         }
-
-        System.out.println(answer);
+        return answer;
     }
 
 }
-
-          /*
-            1, 2,3, ..10000
-            shuffle -> 988, 566, 122, 000...
-
-            Set A - a, b, c, d
-            988, 566, 122, 22, 9, 81, 1
-*/

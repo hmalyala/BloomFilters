@@ -113,7 +113,6 @@ public class CountingBloom {
                 answer++;
             }
         }
-        System.out.println(setA.size());
-        System.out.println(answer);
+        System.out.println("After lookup of elements in A, number of elements found: "+answer);
     }
 }

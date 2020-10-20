@@ -34,6 +34,7 @@ public class CodedBloom {
         for(int i = 5001 ; i < 35001; i++){
             randomList.add(i);
         }
+        Collections.shuffle(randomList);
 
         Set<Integer> rows[] = new HashSet[7];
 
@@ -65,20 +66,20 @@ public class CodedBloom {
     public void encode() {
 
         for(String s : map.keySet()){
-            
+            System.out.print(s+" - ");
             for(int i = 0 ; i < s.length(); i++){
                 if(s.charAt(i) == '1'){
                     helper(map.get(s),i);
                 }
             }
+            System.out.println();
         }
     }
 
 
     public void helper(Set<Integer> set, int position){
-
+        System.out.print(set.size()+","+position+" : ");
         int index = 0, counter = 0;
-        Collections.shuffle(randomList);
 
         //encode the filter with hashes of each element from set A
         for(int i : set){   
@@ -118,7 +119,7 @@ public class CodedBloom {
                     str.append('0');
                 }
             }
-            System.out.println(str);
+            // System.out.println(str);
             if(map.get(str.toString()).contains(i)){
                 answer++;
             }
